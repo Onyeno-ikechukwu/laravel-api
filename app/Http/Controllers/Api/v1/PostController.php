@@ -12,7 +12,13 @@ class PostController extends Controller
      */
     public function index()
     {
-        return 'index';
+        return [
+            [
+                "id" => 1,
+                "Title" => "Test",
+                "Body" => "Post Body",
+            ]
+        ];
 
     }
 
@@ -21,7 +27,16 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        return 'store';
+        $data = $request->all();
+        // $data = $request->only("Title");
+        // return $data;
+        return response()->json([
+            "id" => 1,
+            "Title" => $data["Title"],
+            "Body" => $data["Body"],
+        ], 201);
+        
+        // ->setStatusCode(201);
     }
 
     /**
@@ -29,7 +44,14 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return response()->json([
+            'message'=>"Test",
+            'data' => [
+                "id" => 1,
+                "Title" => "Test",
+                "Body" => "Post Body",
+            ]
+        ])->header('Test', 'zura');
     }
 
     /**
@@ -37,7 +59,11 @@ class PostController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $data = $request->validate([
+            'Title' => 'required|string|min:2',
+            'Body' => ['required', 'string', 'min:2']
+        ]);
+        return $data;
     }
 
     /**
@@ -45,6 +71,6 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        return response()->noContent();
     }
 }
