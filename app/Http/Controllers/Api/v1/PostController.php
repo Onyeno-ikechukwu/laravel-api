@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Posts;
+use App\Models\Post;
 
 class PostController extends Controller
 {
@@ -13,13 +13,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        return [
-            [
-                "id" => 1,
-                "Title" => "Test",
-                "Body" => "Post Body",
-            ]
-        ];
+        return Post::all();
 
     }
 
@@ -34,7 +28,7 @@ class PostController extends Controller
         ]); 
 
         $data['author_id'] = 1;
-        $post = Posts::create($data);
+        $post = Post::create($data);
 
         return response()->json($post, 201);
         
@@ -44,35 +38,34 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(post $post)
     {
-        return response()->json([
-            'message'=>"Test",
-            'data' => [
-                "id" => 1,
-                "Title" => "Test",
-                "Body" => "Post Body",
-            ]
-        ])->header('Test', 'zura');
+        return response()->json($post);
+
+
+        // ->header('Test', 'zura');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, post $post)
     {
         $data = $request->validate([
             'Title' => 'required|string|min:2',
             'Body' => ['required', 'string', 'min:2']
         ]);
-        return $data;
+
+        $post->update($data);
+        return $post;
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(post $post)
     {
+        $post->delete();
         return response()->noContent();
     }
 }
