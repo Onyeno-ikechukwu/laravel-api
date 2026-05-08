@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Posts;
 
 class PostController extends Controller
 {
@@ -27,14 +28,15 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
-        // $data = $request->only("Title");
-        // return $data;
-        return response()->json([
-            "id" => 1,
-            "Title" => $data["Title"],
-            "Body" => $data["Body"],
-        ], 201);
+        $data = $request->validate([
+            'Title' => 'required|string|min:2',
+            'Body' => ['required', 'string', 'min:2']
+        ]); 
+
+        $data['author_id'] = 1;
+        $post = Posts::create($data);
+
+        return response()->json($post, 201);
         
         // ->setStatusCode(201);
     }

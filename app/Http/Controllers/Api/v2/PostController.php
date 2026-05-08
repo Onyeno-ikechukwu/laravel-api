@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Api\v2;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -12,7 +11,6 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
     }
 
     /**
@@ -20,7 +18,7 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return 'store';
     }
 
     /**
