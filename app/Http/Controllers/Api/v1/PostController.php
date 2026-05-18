@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
+use App\Http\Resources\PostResource;
 
 class PostController extends Controller
 {
@@ -14,7 +15,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        return Post::all();
+        return PostResource::collection(Post::all());
 
     }
 
@@ -28,7 +29,7 @@ class PostController extends Controller
         $data['author_id'] = 1;
         $post = Post::create($data);
 
-        return response()->json($post, 201);
+        return response()->json(new PostResource($post), 201);
         
         // ->setStatusCode(201);
     }
@@ -38,7 +39,7 @@ class PostController extends Controller
      */
     public function show(post $post)
     {
-        return response()->json($post);
+        return response()->json(new PostResource($post));
 
 
         // ->header('Test', 'zura');
@@ -52,7 +53,7 @@ class PostController extends Controller
         $data = $request->validated();
 
         $post->update($data);
-        return $post;
+        return new PostResource($post);
     }
 
     /**
