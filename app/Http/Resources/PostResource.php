@@ -9,6 +9,7 @@ use App\Models\Post;
 
 class PostResource extends JsonResource
 {
+    // public static $wrap = null;
     /**
      * Transform the resource into an array.
      *
@@ -22,7 +23,7 @@ class PostResource extends JsonResource
             "Body" => $this->Body,
             "created_at" => $this->created_at->format('Y-m-d H:i:s'),
             "updated_at" => $this->updated_at->format('Y-m-d H:i:s'),
-            'author' => new UserResource($this->author)
+            'author' => new UserResource($this->whenLoaded('author')),
         ];
     }
 }
